@@ -75,7 +75,7 @@ export const loginUser = async (req, res) => {
                 message: 'Contraseña incorrecta',
             });
         }
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        const token = jwt.sign({ id: user._id }, JWT_SECRET, {
             expiresIn: 86400,
         });
         res.status(200).json({
@@ -96,3 +96,25 @@ export const loginUser = async (req, res) => {
         });
     }
 }
+
+//obtener usuario por id
+export const getUserById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await User.findOne({ id }).populate('role').exec(); // Usa id directamente si es UUID
+        if (!user) {
+            return res.status(404).json({
+                message: 'Usuario no encontrado',
+            });
+        }
+        res.status(200).json({
+            user,
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            message: 'Error al obtener el usuario',
+            error: error.message,
+        });
+    }
+};
