@@ -118,3 +118,55 @@ export const getUserById = async (req, res) => {
         });
     }
 };
+
+//eliminar usuario por id
+export const deleteUserById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const user = await User
+            .findOneAndDelete({ id })
+            .populate('role')
+            .exec();
+        if (!user) {
+            return res.status(404).json({
+                message: 'Usuario no encontrado',
+            });
+        }
+        res.status(200).json({
+            message: 'Usuario eliminado con éxito',
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            message: 'Error al eliminar el usuario',
+            error: error.message,
+        });
+    }
+}
+
+//actualizar usuario por id
+export const updateUserById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { username, email} = req.body;
+        const user = await User
+            .findOneAndUpdate({ id }, { username , email }, { new: true })
+            .populate('role')
+            .exec();
+        if (!user) {
+            return res.status(404).json({
+                message: 'Usuario no encontrado',
+            });
+        }
+        res.status(200).json({
+            message: 'Usuario actualizado con éxito',
+            user,
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            message: 'Error al actualizar el usuario',
+            error: error.message,
+        });
+    }
+}
