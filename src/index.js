@@ -1,6 +1,6 @@
 import { PORT } from "./config.js";
 import  app  from "./app.js";
-import { connection } from "./database/connection.js";
+import { connection } from "./services/connection.Service.js";
 
 const incioServidor = async () => {
     try {

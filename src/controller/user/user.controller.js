@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import User from '../../database/models/user.models.js';
-import Role from '../../database/models/roles.models.js';
+import User from '../../models/user.models.js';
+import Role from '../../models/roles.models.js';
 import { JWT_SECRET } from '../../config.js';
 
 //crear usuario

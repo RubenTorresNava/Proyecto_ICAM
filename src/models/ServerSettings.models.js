@@ -16,15 +16,7 @@ const ServerSettingsSchema = new mongoose.Schema({
         type: Boolean, 
         default: false 
     },
-    createdAt: { 
-        type: Date, 
-        default: Date.now 
-    },
     version: { 
-        type: String, 
-        required: true 
-    },
-    serverName: { 
         type: String, 
         required: true 
     },
@@ -33,7 +25,7 @@ const ServerSettingsSchema = new mongoose.Schema({
         required: true
     },
     serverPort: {
-        type: String,
+        type: String, // Cambia a Number si es solo numérico
         required: true
     },
     plugins: {
@@ -43,7 +35,7 @@ const ServerSettingsSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
-    },
+    }
 });
 
 export default mongoose.model("ServerSettings", ServerSettingsSchema);

@@ -4,6 +4,7 @@ import corse from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import UserRoutes from './routes/user/user.route.js';
+import SettingsRoutes from './routes/ServerSettings/settings.route.js';
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -18,5 +19,6 @@ app.get('/', (req, res) => {
     });
 
     app.use("/api/user", UserRoutes);
+    app.use("/api/server", SettingsRoutes);
 
 export default app;
