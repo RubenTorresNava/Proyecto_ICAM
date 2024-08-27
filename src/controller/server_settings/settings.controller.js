@@ -21,3 +21,13 @@ export const updateServerSettingsFromFile = async (req, res) => {
         res.status(500).json({ message: err.message }); // retornar un mensaje de error
     }
 };
+
+// funcion para sincronizar las configuraciones del servidor
+export const syncSettingsToFile = async (req, res) => {
+    try {
+        await writeProperties(); // escribir las configuraciones en el archivo server.properties
+        res.status(200).json({ message: 'Configuraciones sincronizadas.' }); // retornar un mensaje de exito
+    } catch (err) {
+        res.status(500).json({ message: err.message }); // retornar un mensaje de error
+    }
+};
