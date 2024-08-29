@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import User from '../../database/models/user.models.js';
+import User from '../../models/user.models.js';
 import { JWT_SECRET } from '../../config.js';
 
 export const validateUser = async (req, res, next) => { // funcion para validar el usuario
@@ -28,5 +28,22 @@ export const validateUser = async (req, res, next) => { // funcion para validar 
             return res.status(401).json({ message: 'Token inválido.' });
         }
         res.status(500).json({ message: 'Error del servidor: ' + err.message });
+    }
+};
+
+//verificar un rol específico con el token
+export const verifyRole = (requiredRole) => (req, res, next) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    if(!token){
+        return res.status(403).json({ message: 'No se ha enviado un token.' });
+    }
+    try{
+        const decoded = jwt.verify(token, JWT_SECRET);
+        if(decoded.role !== requiredRole){
+            return res.status(403).json({ message: 'No tienes permisos para realizar esta acción.' });
+        }
+        next();
+    } catch (err) {
+        res.status(401).json({ message: 'Token inválido.' });
     }
 };
