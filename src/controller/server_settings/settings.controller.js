@@ -1,4 +1,4 @@
-import { readProperties, writeProperties, loadServerSettings, updateServerSettings } from "../../services/file.Service.js";
+import { writeProperties, loadServerSettings, updateServerSettings } from "../../services/file.Service.js";
 
 // funcion para obtener las configuraciones del servidor y parsear la fecha a dd/mm/yyyy del campo createdAt
 export const getServerSettings = async (req, res) => {
@@ -9,8 +9,8 @@ export const getServerSettings = async (req, res) => {
         }
         res.status(200).json({ // retornar las configuraciones del servidor
             settings: {
-                ...settings._doc,
-                createdAt: new Date(settings.createdAt).toLocaleDateString(),
+                ...settings._doc, // obtener las configuraciones del servidor
+                createdAt: new Date(settings.createdAt).toLocaleDateString(), // parsear la fecha a dd/mm/yyyy
             },
         });
     } catch (err) {
