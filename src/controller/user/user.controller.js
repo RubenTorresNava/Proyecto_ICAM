@@ -34,26 +34,30 @@ export const createUser = async (req, res) => {
     }
 };
 
-//mostrar todos los usuarios y decir que rol tienen
+//mostrar todos los usuarios y decir que rol tienen y parsear la fecha a dd/mm/yyyy
 export const getUsers = async (req, res) => {
     try {
         const users = await User.find().populate('role').exec();
-
-        const usersWithRoleName = users.map(user => ({
-            _id: user._id,
-            username: user.username,
-            email: user.email,
-            role: user.role ? user.role.name : 'Sin rol asignado',
-            createdAt: user.createdAt,
-            updatedAt: user.updatedAt,
-        }));
-
+        if (!users) {
+            return res.status(404).json({
+                message: 'No se encontraron usuarios',
+            });
+        }
         res.status(200).json({
-            users: usersWithRoleName,
+            users: users.map((user) => {
+                return {
+                    _id: user._id,
+                    username: user.username,
+                    email: user.email,
+                    role: user.role ? user.role.name : 'Sin rol asignado',
+                    createdAt: new Date(user.createdAt).toLocaleDateString(),
+                };
+            }),
         });
-    } catch (error) {
+    }
+    catch (error) {
         res.status(500).json({
-            message: 'Error al mostrar los usuarios',
+            message: 'Error al obtener los usuarios',
             error: error.message,
         });
     }

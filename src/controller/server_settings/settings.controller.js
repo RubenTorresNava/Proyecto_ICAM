@@ -1,10 +1,18 @@
 import { readProperties, writeProperties, loadServerSettings, updateServerSettings } from "../../services/file.Service.js";
 
-// funcion para obtener las configuraciones del servidor
+// funcion para obtener las configuraciones del servidor y parsear la fecha a dd/mm/yyyy del campo createdAt
 export const getServerSettings = async (req, res) => {
     try {
         const settings = await loadServerSettings(); // cargar las configuraciones del servidor
-        res.status(200).json(settings); // retornar las configuraciones del servidor
+        if (!settings) { // condicion para verificar si se encontraron las configuraciones del servidor
+            return res.status(404).json({ message: 'No se encontraron configuraciones del servidor.' }); // retornar un mensaje de error
+        }
+        res.status(200).json({ // retornar las configuraciones del servidor
+            settings: {
+                ...settings._doc,
+                createdAt: new Date(settings.createdAt).toLocaleDateString(),
+            },
+        });
     } catch (err) {
         res.status(500).json({ message: err.message }); // retornar un mensaje de error
     }
