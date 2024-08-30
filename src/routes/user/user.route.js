@@ -6,7 +6,7 @@ const router = Router();
 
 router.post('/register', userController.createUser);
 router.get('/users', validateUser, verifyRole('admin'), userController.getUsers);
-router.post('/', userController.loginUser);
+router.post('/users/login', userController.loginUser);
 router.get('/users/:id', validateUser, userController.getUserById);
 router.delete('/users/:id', validateUser, userController.deleteUserById);
 router.put('/users/:id', validateUser, userController.updateUserById);
