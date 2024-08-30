@@ -10,6 +10,7 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+app.use(morgan('dev'));
 app.use(corse());
 app.use(express.json());
 
