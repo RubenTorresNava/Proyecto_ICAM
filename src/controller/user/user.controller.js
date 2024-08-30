@@ -34,26 +34,30 @@ export const createUser = async (req, res) => {
     }
 };
 
-//mostrar todos los usuarios y decir que rol tienen
+//mostrar todos los usuarios y decir que rol tienen y parsear la fecha a dd/mm/yyyy
 export const getUsers = async (req, res) => {
     try {
         const users = await User.find().populate('role').exec();
-
-        const usersWithRoleName = users.map(user => ({
-            _id: user._id,
-            username: user.username,
-            email: user.email,
-            role: user.role ? user.role.name : 'Sin rol asignado',
-            createdAt: user.createdAt,
-            updatedAt: user.updatedAt,
-        }));
-
+        if (!users) {
+            return res.status(404).json({
+                message: 'No se encontraron usuarios',
+            });
+        }
         res.status(200).json({
-            users: usersWithRoleName,
+            users: users.map((user) => {
+                return {
+                    _id: user._id,
+                    username: user.username,
+                    email: user.email,
+                    role: user.role ? user.role.name : 'Sin rol asignado',
+                    createdAt: new Date(user.createdAt).toLocaleDateString(),
+                };
+            }),
         });
-    } catch (error) {
+    }
+    catch (error) {
         res.status(500).json({
-            message: 'Error al mostrar los usuarios',
+            message: 'Error al obtener los usuarios',
             error: error.message,
         });
     }
@@ -65,19 +69,27 @@ export const loginUser = async (req, res) => {
         const { email, password } = req.body;
         const user = await User.findOne({ email }).populate('role').exec();
         if (!user) {
-            return res.status(404).json({
-                message: 'Usuario no encontrado',
+            // Mensaje genérico para evitar enumeración de usuarios
+            return res.status(401).json({
+                message: 'Credenciales incorrectas',
             });
         }
+
         const validPassword = await bcrypt.compare(password, user.password);
         if (!validPassword) {
+            // Mantiene el mismo mensaje para no revelar si el problema es la contraseña o el usuario
             return res.status(401).json({
-                message: 'Contraseña incorrecta',
+                message: 'Credenciales incorrectas',
             });
         }
-        const token = jwt.sign({ id: user._id }, JWT_SECRET, {
-            expiresIn: 86400,
-        });
+
+        // Generación del token JWT
+        const token = jwt.sign(
+            { id: user._id, role: user.role.name }, // Incluye el rol en el token si es necesario
+            JWT_SECRET,
+            { expiresIn: '24h' } // Se usa un formato más legible para la expiración
+        );
+
         res.status(200).json({
             message: 'Usuario logueado con éxito',
             token,
@@ -88,14 +100,13 @@ export const loginUser = async (req, res) => {
                 role: user.role ? user.role.name : 'Sin rol asignado',
             },
         });
-    }
-    catch (error) {
+    } catch (error) {
         res.status(500).json({
             message: 'Error al loguear el usuario',
             error: error.message,
         });
     }
-}
+};
 
 //obtener usuario por id
 export const getUserById = async (req, res) => {

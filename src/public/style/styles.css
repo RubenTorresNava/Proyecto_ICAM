@@ -1,54 +1,107 @@
+/* General */
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #1B1B2F; /* Azul muy oscuro */
+    color: #EAEAEA; /* Color claro para el texto */
 }
 
 header {
-    background-color: #333;
+    background-color: #003366; /* Azul marino */
     color: white;
     padding: 1rem;
     text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
 }
 
 nav a {
-    color: white;
+    color: #EAEAEA;
     margin: 0 1rem;
     text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.why-section, .features-section {
+    background: #1B1B2F; /* Morado oscuro a azul marino */
+    padding: 2rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.7);
+    text-align: center;
+    color: #EAEAEA;
+}
+
+nav a:hover {
+    color: #9B59B6; /* Morado claro */
+    transform: scale(1.1);
 }
 
 main {
     padding: 2rem;
+    max-width: 1200px;
+    margin: auto;
 }
 
 .hero {
-    background: #ddd;
+    background: linear-gradient(145deg, #4A148C, #003366); /* Morado oscuro a azul marino */
     padding: 2rem;
-    border-radius: 8px;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.7);
+    text-align: center;
+    color: #EAEAEA;
+}
+
+.hero h2 {
+    font-size: 2.5rem;
+    margin: 0;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.7);
+}
+
+.benefits, .features {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
     margin-bottom: 2rem;
 }
 
-.about {
-    background: #fff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.benefit-item, .feature-item {
+    background: #162447; /* Azul grisáceo oscuro */
+    padding: 1.5rem;
+    border-radius: 12px;
+    width: 45%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    margin: 0.5rem 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.contact {
-    background: #ddd;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.benefit-item:hover, .feature-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+.tittle{
+    text-align: center;
+    margin: 2rem 0;
+    font-size: 2rem;
+    color: #EAEAEA;
 }
 
 footer {
-    background-color: #333;
+    background-color: #003366; /* Azul marino */
     color: white;
     text-align: center;
-    padding: 0.5rem;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+    padding: 1rem;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.5);
+    position: relative;
+    margin-top: 2rem;
 }
