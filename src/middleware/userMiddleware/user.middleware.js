@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import User from '../../models/user.models.js';
 import { JWT_SECRET } from '../../config.js';
 
-export const validateUser = async (req, res, next) => { // funcion para validar el usuario
+export const validateUser = async (req, res, next) => { // función para validar el usuario
     try {
         // Obtener el token del encabezado Authorization
         const token = req.headers.authorization?.split(' ')[1];
@@ -30,6 +30,7 @@ export const validateUser = async (req, res, next) => { // funcion para validar 
         res.status(500).json({ message: 'Error del servidor: ' + err.message });
     }
 };
+
 
 //verificar un rol específico con el token
 export const verifyRole = (requiredRole) => (req, res, next) => {

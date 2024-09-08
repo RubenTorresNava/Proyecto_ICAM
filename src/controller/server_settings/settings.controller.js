@@ -1,4 +1,5 @@
 import { writeProperties, loadServerSettings, updateServerSettings } from "../../services/file.Service.js";
+import { createOrUpdateLog } from "../../services/logs.Service.js";
 
 // funcion para obtener las configuraciones del servidor y parsear la fecha a dd/mm/yyyy del campo createdAt
 export const getServerSettings = async (req, res) => {
@@ -20,15 +21,29 @@ export const getServerSettings = async (req, res) => {
 
 // funcion para actualizar las configuraciones del servidor
 export const updateServerSettingsFromFile = async (req, res) => {
+    const userId = req.user._id; // obtener el id del usuario
+    const newConfig = req.body.config;
+
     try {
         const settings = req.body; // obtener las configuraciones del servidor
         await updateServerSettings(settings); // actualizar las configuraciones del servidor
         await writeProperties(); // escribir las configuraciones en el archivo server.properties
-        res.status(200).json({ message: 'Configuraciones actualizadas.' }); // retornar un mensaje de exito
+
+        // Crear o actualizar el log después de la escritura del archivo
+        const logDetails = JSON.stringify(newConfig); // Ajusta los detalles como sea necesario
+        await createOrUpdateLog(userId, 'Configuraciones actualizadas', logDetails);
+
+        // Retornar un mensaje de éxito
+        res.status(200).json({ message: 'Configuraciones actualizadas.' });
     } catch (err) {
-        res.status(500).json({ message: err.message }); // retornar un mensaje de error
+        console.error('Error al actualizar las configuraciones:', err.message);
+
+        // Retornar un mensaje de error
+        res.status(500).json({ message: 'Error al actualizar las configuraciones: ' + err.message });
     }
 };
+
+
 
 // funcion para sincronizar las configuraciones del servidor
 export const syncSettingsToFile = async (req, res) => {
