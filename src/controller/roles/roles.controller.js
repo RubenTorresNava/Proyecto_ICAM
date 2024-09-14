@@ -1,12 +1,12 @@
 import  User from '../../models/user.models.js';
 import  Role from '../../models/roles.models.js';
 
+// Actualizar el rol de un usuario
 export const updateUserRole = async (req, res) => {
     try {
-        const { id } = req.params; // ID del usuario
-        const { role } = req.body; // Nombre del rol (por ejemplo, 'admin', 'moderator', etc.)
-
-        // Validar que el rol sea uno de los roles permitidos (opcional si los roles están bien configurados en la base de datos)
+        const { id } = req.params; 
+        const { role } = req.body; 
+        // Validar que el rol sea uno de los roles permitidos
         const validRoles = ['admin', 'moderator', 'regular'];
         if (!validRoles.includes(role)) {
             return res.status(400).json({
@@ -15,7 +15,7 @@ export const updateUserRole = async (req, res) => {
         }
 
         // Buscar el ObjectId del rol en la colección de roles
-        const roleDoc = await Role.findOne({ name: role }).exec(); // Asumo que los roles tienen un campo 'name'
+        const roleDoc = await Role.findOne({ name: role }).exec(); 
         if (!roleDoc) {
             return res.status(404).json({
                 message: 'Rol no encontrado',
@@ -25,7 +25,7 @@ export const updateUserRole = async (req, res) => {
         // Actualizar el rol del usuario con el ObjectId
         const user = await User.findOneAndUpdate(
             { id }, 
-            { role: roleDoc._id }, // Aquí asignas el ObjectId del rol
+            { role: roleDoc._id },
             { new: true }
         ).exec();
 
